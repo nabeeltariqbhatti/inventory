@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository
-public interface CompanyRepo extends JpaRepository<Company,Integer> {
+public interface RepositoryCompany extends JpaRepository<Company,Integer> {
+
+	Company findByIdAndIsDeleted(Integer id, boolean isDeleted);
 
 }
