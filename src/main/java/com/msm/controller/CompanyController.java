@@ -3,9 +3,9 @@ package com.msm.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.msm.dto.CompanyDto;
+import com.msm.dto.DtoSearch;
 import com.msm.service.ServiceCompany;
 import com.msms.common.library.dto.CustomResponse;
-import com.msms.common.library.util.CustomResponseMap;
 import com.msms.common.library.util.StringUtil;
 
 import org.slf4j.LoggerFactory;
@@ -98,5 +98,19 @@ public class CompanyController {
 					.status(HttpStatus.BAD_REQUEST).message("BAD REQUEST").data(companyId)
 					.requestTime(endTime - startTime).build();
 		}
+	}
+	
+	@GetMapping("")
+	public CustomResponse getForDwopDown() {
+
+		log.info("Company get for drop down ");
+
+		return serviceCompany.getForDwopDown();
+	}
+	
+	@GetMapping("/searchCompanyWithPaging")
+	public CustomResponse searchCompanyWithPaging(@RequestBody DtoSearch dtoSearch) throws JsonProcessingException {
+		log.info("search Company With Paging .. "+new ObjectMapper().writeValueAsString(dtoSearch));
+		return serviceCompany.searchCompanyWithPaging(dtoSearch);
 	}
 }

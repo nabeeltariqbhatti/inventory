@@ -1,6 +1,7 @@
 package com.msm.service;
 
 import com.msm.dto.CompanyDto;
+import com.msm.dto.DtoSearch;
 import com.msms.common.library.dto.CustomResponse;
 
 /**
@@ -16,4 +17,8 @@ public interface ServiceCompany {
 	CustomResponse saveUpdate(CompanyDto companyDto);
 
 	CustomResponse deleteCompanyById(Integer companyId);
+
+	CustomResponse getForDwopDown();
+
+	CustomResponse searchCompanyWithPaging(DtoSearch dtoSearch);
 }
