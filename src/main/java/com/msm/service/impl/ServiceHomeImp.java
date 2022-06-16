@@ -3,6 +3,7 @@ package com.msm.service.impl;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.msm.common.library.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +29,7 @@ public class ServiceHomeImp implements ServiceHome{
 	public int getUserId() {
 		
 		String userId = httpServletRequest.getHeader(USER_ID);
-		if (com.msms.common.library.util.StringUtil.isNotBlank(userId)) {
+		if (StringUtil.isNotBlank(userId)) {
 			return Integer.parseInt(userId);
 		} else {
 			return 1;

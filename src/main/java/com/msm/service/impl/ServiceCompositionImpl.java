@@ -12,12 +12,11 @@ import com.msm.service.ServiceComposition;
 import com.msm.service.ServiceHome;
 import com.msm.util.Pagination;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-
-import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -172,17 +171,17 @@ public class ServiceCompositionImpl implements ServiceComposition {
 
 			if (sortBy.equals("") && sortOn.equals("")) {
 				compositions = this.repositoryComposition.predictiveCompositionSearchWithPagination("%" + searchWord + "%",
-						(Pageable) new Pagination(pageNumber, pageSize,
+						 new Pagination(pageNumber, pageSize,
 								Sort.by(Sort.Direction.ASC, condition)));
 			}
 			if (sortBy.equals("ASC")) {
 				compositions = this.repositoryComposition.predictiveCompositionSearchWithPagination("%" + searchWord + "%",
-						(Pageable) new Pagination(pageNumber, pageSize,
+						 new Pagination(pageNumber, pageSize,
 							   Sort.by(Sort.Direction.ASC, condition)));
 			} else if (sortBy.equals("DESC")) {
-				compositions = this.repositoryComposition.predictiveCompositionSearchWithPagination("%" + searchWord + "%",
-						(Pageable) new Pagination(pageNumber, pageSize,
-								Sort.by(Sort.Direction.DESC, condition)));
+				compositions = this.repositoryComposition.predictiveCompositionSearchWithPagination("%" + searchWord + "%", PageRequest.of(pageNumber, pageSize,
+								Sort.by(Sort.Direction.DESC)));
+
 			}
 			if (StringUtil.isNotNull(compositions) && !compositions.isEmpty()) {
 				List<CompositionDto> listCompositionDtos = new ArrayList<>();
