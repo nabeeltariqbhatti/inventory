@@ -8,7 +8,7 @@ import com.msm.common.library.util.StringUtil;
 import com.msm.dto.SalesDto;
 import com.msm.entity.Sales;
 import com.msm.mapper.MapperSales;
-import com.msm.repo.RepositorySales;
+import com.msm.repository.RepositorySales;
 import com.msm.service.ServiceSales;
 import com.msm.service.ServiceHome;
 import com.msm.util.Pagination;
