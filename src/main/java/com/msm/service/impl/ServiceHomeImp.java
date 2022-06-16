@@ -6,13 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.msm.common.library.util.StringUtil;
 import com.msm.service.ServiceHome;
-
-
-
-
-
-
 
 @Service
 public class ServiceHomeImp implements ServiceHome{
@@ -28,7 +23,7 @@ public class ServiceHomeImp implements ServiceHome{
 	public int getUserId() {
 		
 		String userId = httpServletRequest.getHeader(USER_ID);
-		if (com.msms.common.library.util.StringUtil.isNotBlank(userId)) {
+		if (StringUtil.isNotBlank(userId)) {
 			return Integer.parseInt(userId);
 		} else {
 			return 1;

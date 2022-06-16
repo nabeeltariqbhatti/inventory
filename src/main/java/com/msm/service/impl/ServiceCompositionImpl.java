@@ -7,7 +7,7 @@ import com.msm.dto.CompositionDto;
 import com.msm.dto.DtoSearch;
 import com.msm.entity.Composition;
 import com.msm.mapper.MapperComposition;
-import com.msm.repo.RepositoryComposition;
+import com.msm.repository.RepositoryComposition;
 import com.msm.service.ServiceComposition;
 import com.msm.service.ServiceHome;
 import com.msm.util.Pagination;
