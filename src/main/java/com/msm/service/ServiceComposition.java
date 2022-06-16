@@ -2,7 +2,6 @@ package com.msm.service;
 
 import com.msm.common.library.dto.CustomResponse;
 import com.msm.dto.CompositionDto;
-import com.msm.dto.DtoSearch;
 
 
 /**
@@ -13,11 +12,11 @@ import com.msm.dto.DtoSearch;
 
 public interface ServiceComposition {
 
-	CustomResponse getCompositionById(Integer companyId);
+	CustomResponse getCompositionById(Integer compositionId);
 
-	CustomResponse saveUpdate(CompositionDto companyDto);
+	CustomResponse saveUpdate(CompositionDto compositionDto);
 
-	CustomResponse deleteCompositionById(Integer companyId);
+	CustomResponse deleteCompositionById(Integer compositionId);
 
 	CustomResponse getForDwopDown();
 
