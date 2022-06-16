@@ -21,7 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 /**
- * @author Nabeel Bhatti
+ * @author NabeelBhatti
  */
 
 @Service
