@@ -3,6 +3,7 @@ package com.msm.service.impl;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.msm.common.library.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

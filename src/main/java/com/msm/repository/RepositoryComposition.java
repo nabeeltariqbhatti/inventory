@@ -1,5 +1,6 @@
 package com.msm.repository;
 
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,7 +21,7 @@ public interface RepositoryComposition extends JpaRepository<Composition,Integer
     List<Composition> findByIsDeleted(boolean b);
 
     @Query("SELECT c FROM Composition c WHERE c.name LIKE :searchKeyWord AND c.isDeleted=false")
-    List<Composition> predictiveCompositionSearchWithPagination(@Param("searchKeyWord")String searchKeyWord, Pageable pageRequest);
+    List<Composition> predictiveCompositionSearchWithPagination(@Param("searchKeyWord") String searchKeyWord, Pageable pageRequest);
 
     @Query("SELECT COUNT(*) FROM Composition c WHERE c.name LIKE :searchKeyWord AND c.isDeleted=false")
     Integer predictiveCompositionSearchTotalCount(@Param("searchKeyWord")String searchKeyWord);
