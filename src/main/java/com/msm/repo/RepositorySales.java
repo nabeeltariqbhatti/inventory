@@ -20,9 +20,9 @@ public interface RepositorySales extends JpaRepository<Sales,Integer> {
 
     List<Sales> findByIsDeleted(boolean b);
 
-    @Query("SELECT c FROM Sales c WHERE c.name LIKE :searchKeyWord AND c.isDeleted=false")
+    @Query("SELECT c FROM Sales c WHERE c.customerId.name LIKE :searchKeyWord   AND c.isDeleted=false")
     List<Sales> predictiveSalesSearchWithPagination(@Param("searchKeyWord") String searchKeyWord, Pageable pageRequest);
 
-    @Query("SELECT COUNT(*) FROM Sales c WHERE c.name LIKE :searchKeyWord AND c.isDeleted=false")
+    @Query("SELECT COUNT(*) FROM Sales c WHERE c.customerId.name LIKE :searchKeyWord AND c.isDeleted=false")
     Integer predictiveSalesSearchTotalCount(@Param("searchKeyWord")String searchKeyWord);
 }
