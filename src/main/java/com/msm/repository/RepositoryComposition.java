@@ -1,4 +1,4 @@
-package com.msm.repo;
+package com.msm.repository;
 
 
 import org.springframework.data.domain.Pageable;

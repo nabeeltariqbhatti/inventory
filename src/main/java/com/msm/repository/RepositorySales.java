@@ -1,4 +1,6 @@
-package com.msm.repo;
+package com.msm.repository;
+
+
 
 
 import com.msm.entity.Sales;

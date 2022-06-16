@@ -4,7 +4,7 @@ import com.msm.dto.CompanyDto;
 import com.msm.dto.DtoSearch;
 import com.msm.entity.Company;
 import com.msm.mapper.MapperCompany;
-import com.msm.repo.RepositoryCompany;
+import com.msm.repository.RepositoryCompany;
 import com.msm.service.ServiceCompany;
 import com.msm.service.ServiceHome;
 import com.msm.util.Pagination;
