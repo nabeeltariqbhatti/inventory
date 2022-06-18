@@ -1,19 +1,17 @@
 package com.msm.service.impl;
 
 
-
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.msm.common.library.constant.AppConstant;
 import com.msm.common.library.dto.CustomResponse;
 import com.msm.common.library.util.StringUtil;
-import com.msm.dto.SalesDto;
-import com.msm.entity.Sales;
-import com.msm.mapper.MapperSales;
-import com.msm.repository.RepositorySales;
-import com.msm.service.ServiceSales;
+import com.msm.dto.MedicineDto;
+import com.msm.entity.Medicine;
+import com.msm.mapper.MapperMedicine;
+import com.msm.repository.RepositoryMedicine;
 import com.msm.service.ServiceHome;
+import com.msm.service.ServiceMedicine;
 import com.msm.util.Pagination;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,39 +29,39 @@ import java.util.Map;
  */
 
 @Service
-public class ServiceSalesImpl implements ServiceSales {
+public class ServiceMedicineImpl implements ServiceMedicine {
 
-	private final RepositorySales repositorySales;
-	private static final Logger LOGGER = LoggerFactory.getLogger(ServiceSalesImpl.class);
+	private final RepositoryMedicine repositoryMedicine;
+	private static final Logger LOGGER = LoggerFactory.getLogger(ServiceMedicineImpl.class);
 
 	private final ServiceHome serviceHome;
 
 	@Autowired private ObjectMapper objectMapper;
 
 	@Autowired
-	public ServiceSalesImpl(RepositorySales repositorySales, ServiceHome serviceHome) {
-		this.repositorySales = repositorySales;
+	public ServiceMedicineImpl(RepositoryMedicine repositoryMedicine, ServiceHome serviceHome) {
+		this.repositoryMedicine = repositoryMedicine;
 		this.serviceHome = serviceHome;
 
 	}
 
 	@Override
-	public CustomResponse saveUpdate(SalesDto saleDto) {
+	public CustomResponse saveUpdate(MedicineDto medicineDto) {
 		long startTime = System.currentTimeMillis();
 		long endTime;
-		Sales sale;
+		Medicine medicine;
 
-		if (StringUtil.isNotNull(saleDto.getId()) && saleDto.getId() > 0) {
+		if (StringUtil.isNotNull(medicineDto.getId()) && medicineDto.getId() > 0) {
 
-			sale = repositorySales.findByIdAndIsDeleted(saleDto.getId(), false);
+			medicine = repositoryMedicine.findByIdAndIsDeleted(medicineDto.getId(), false);
 
-			if (StringUtil.isNotNull(sale)) {
+			if (StringUtil.isNotNull(medicine)) {
 
-				LOGGER.info("sales object found with id  {} " , saleDto.getIsDeleted());
+				LOGGER.info("medicine object found with id  {} " , medicineDto.getIsDeleted());
 				try{
-					LOGGER.info("sales object is {}",objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(saleDto) );
-					sale = MapperSales.salesDtoToSalesMapper(saleDto,serviceHome.getUserId());
-					repositorySales.save(sale);
+					LOGGER.info("medicine object is {}",objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(medicineDto) );
+					medicine = MapperMedicine.medicineDtoToMedicineMapper(medicineDto,serviceHome.getUserId());
+					repositoryMedicine.save(medicine);
 				}catch (JsonProcessingException jsonParseException){
 					LOGGER.info("exception while parsing or saving  {}", jsonParseException.getMessage());
 				}
@@ -76,17 +72,17 @@ public class ServiceSalesImpl implements ServiceSales {
 						.status(HttpStatus.CREATED).message(AppConstant.DATA_UPDATE_SUCCESSFULL).data(null)
 						.requestTime(endTime - startTime).build();
 			} else {
-				LOGGER.info("no sales object found with id  {} " , saleDto.getId());
+				LOGGER.info("no medicine object found with id  {} " , medicineDto.getId());
 				endTime = System.currentTimeMillis();
 				return new CustomResponse.CustomResponseBuilder().code(HttpStatus.NOT_FOUND.value())
-						.status(HttpStatus.NOT_FOUND).message(AppConstant.DATA_NOT_FOUND).data(saleDto)
+						.status(HttpStatus.NOT_FOUND).message(AppConstant.DATA_NOT_FOUND).data(medicineDto)
 						.requestTime(endTime - startTime).build();
 			}
 		} else {
-			sale = MapperSales.salesDtoToSalesMapper(saleDto,serviceHome.getUserId());
+			medicine = MapperMedicine.medicineDtoToMedicineMapper(medicineDto,serviceHome.getUserId());
 			try{
-				LOGGER.info("going to save sales object  {}",objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(sale) );
-				repositorySales.save(sale);
+				LOGGER.info("going to save medicine object  {}",objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(medicine) );
+				repositoryMedicine.save(medicine);
 			}catch (JsonProcessingException jsonParseException){
 				LOGGER.info("exception while parsing  " +jsonParseException.getMessage());
 			}
@@ -100,17 +96,17 @@ public class ServiceSalesImpl implements ServiceSales {
 	}
 
 	@Override
-	public CustomResponse getSalesById(Integer saleId) {
+	public CustomResponse getMedicineById(Integer medicineId) {
 
 		long startTime = System.currentTimeMillis();
 		long endTime;
 
-		Sales sale = repositorySales.findByIdAndIsDeleted(saleId, false);
-		if (StringUtil.isNotNull(sale)) {
-			SalesDto saleDto = MapperSales.salesToSalesDtoMapper(sale,serviceHome.getUserId());
+		Medicine medicine = repositoryMedicine.findByIdAndIsDeleted(medicineId, false);
+		if (StringUtil.isNotNull(medicine)) {
+			MedicineDto medicineDto = MapperMedicine.medicineToMedicineDtoMapper(medicine,serviceHome.getUserId());
 			endTime = System.currentTimeMillis();
 			return new CustomResponse.CustomResponseBuilder().code(HttpStatus.FOUND.value()).status(HttpStatus.FOUND)
-					.message(AppConstant.DATA_FOUND).data(saleDto).requestTime(endTime - startTime).build();
+					.message(AppConstant.DATA_FOUND).data(medicineDto).requestTime(endTime - startTime).build();
 		} else {
 			endTime = System.currentTimeMillis();
 			return new CustomResponse.CustomResponseBuilder().code(HttpStatus.NOT_FOUND.value())
@@ -120,19 +116,19 @@ public class ServiceSalesImpl implements ServiceSales {
 	}
 
 	@Override
-	public CustomResponse deleteSalesById(Integer saleId) {
+	public CustomResponse deleteMedicineById(Integer medicineId) {
 		long startTime = System.currentTimeMillis();
 		long endTime = 0;
 
-		LOGGER.info("request received to delete the sales with id {}", saleId);
-		Sales sale = repositorySales.findByIdAndIsDeleted(saleId, false);
-		if (StringUtil.isNotNull(sale)) {
-			sale.setIsDeleted(true);
+		LOGGER.info("request received to delete the medicine with id {}", medicineId);
+		Medicine medicine = repositoryMedicine.findByIdAndIsDeleted(medicineId, false);
+		if (StringUtil.isNotNull(medicine)) {
+			medicine.setIsDeleted(true);
 			try{
-				LOGGER.info("going to save sales object  {}",objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(sale) );
-				repositorySales.save(sale);
+				LOGGER.info("going to save medicine object  {}",objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(medicine) );
+				repositoryMedicine.save(medicine);
 			}catch (JsonProcessingException jsonParseException){
-				LOGGER.info("exception while parsing  or saving sales{}", jsonParseException.getMessage());
+				LOGGER.info("exception while parsing  or saving medicine{}", jsonParseException.getMessage());
 			}
 			endTime = System.currentTimeMillis();
 			return new CustomResponse.CustomResponseBuilder().code(HttpStatus.OK.value()).status(HttpStatus.OK)
@@ -151,16 +147,16 @@ public class ServiceSalesImpl implements ServiceSales {
 
 		long startTime = System.currentTimeMillis();
 		long endTime = 0;
-		List<Sales> saleList = repositorySales.findByIsDeleted(false);
-		List<SalesDto> saleDtos = new ArrayList<SalesDto>();
-		if (StringUtil.isNotNull(saleList) && !saleList.isEmpty()) {
-			saleList.forEach(obj -> {
-				SalesDto saleDto = MapperSales.salesToSalesDtoMapper(obj,serviceHome.getUserId());
-				saleDtos.add(saleDto);
+		List<Medicine> medicineList = repositoryMedicine.findByIsDeleted(false);
+		List<MedicineDto> medicineDtos = new ArrayList<MedicineDto>();
+		if (StringUtil.isNotNull(medicineList) && !medicineList.isEmpty()) {
+			medicineList.forEach(obj -> {
+				MedicineDto medicineDto = MapperMedicine.medicineToMedicineDtoMapper(obj,serviceHome.getUserId());
+				medicineDtos.add(medicineDto);
 			});
 			endTime = System.currentTimeMillis();
 			return new CustomResponse.CustomResponseBuilder().code(HttpStatus.OK.value()).status(HttpStatus.OK)
-					.message(AppConstant.DATA_FOUND).data(saleDtos).requestTime(endTime - startTime).build();
+					.message(AppConstant.DATA_FOUND).data(medicineDtos).requestTime(endTime - startTime).build();
 		} else {
 			endTime = System.currentTimeMillis();
 			return new CustomResponse.CustomResponseBuilder().code(HttpStatus.NOT_FOUND.value())
@@ -172,7 +168,7 @@ public class ServiceSalesImpl implements ServiceSales {
 
 
 	@Override
-	public CustomResponse searchSalesWithPaging(String searchKeyword, Integer pageNumber, Integer pageSize, String sortBy, String sortOn, Integer totalCount, String fromDate, String toDate) {
+	public CustomResponse searchMedicineWithPaging(String searchKeyword, Integer pageNumber, Integer pageSize, String sortBy, String sortOn, Integer totalCount, String fromDate, String toDate) {
 
 		LOGGER.info("request received for the pagination  with the following parameters   " + searchKeyword);
 		long startTime = System.currentTimeMillis();
@@ -197,35 +193,35 @@ public class ServiceSalesImpl implements ServiceSales {
 				sortOn = "";
 				sortBy = "";
 			}
-			List<Sales> sales = null;
-			totalCount= repositorySales.predictiveSalesSearchTotalCount("%" + searchWord + "%");
+			List<Medicine> medicine = null;
+			totalCount= repositoryMedicine.predictiveMedicineSearchTotalCount("%" + searchWord + "%");
 
 			if (sortBy.equals("") && sortOn.equals("")) {
-				sales = this.repositorySales.predictiveSalesSearchWithPagination("%" + searchWord + "%",
-						(Pageable) new Pagination(pageNumber, pageSize,
+				medicine = this.repositoryMedicine.predictiveMedicineSearchWithPagination("%" + searchWord + "%",
+						 new Pagination(pageNumber, pageSize,
 								Sort.by(Sort.Direction.ASC, condition)));
 			}
 			if (sortBy.equals("ASC")) {
-				sales = this.repositorySales.predictiveSalesSearchWithPagination("%" + searchWord + "%",
-						(Pageable) new Pagination(pageNumber, pageSize,
+				medicine = this.repositoryMedicine.predictiveMedicineSearchWithPagination("%" + searchWord + "%",
+						 new Pagination(pageNumber, pageSize,
 								Sort.by(Sort.Direction.ASC, condition)));
 			} else if (sortBy.equals("DESC")) {
-				sales = this.repositorySales.predictiveSalesSearchWithPagination("%" + searchWord + "%",
-						(Pageable) new Pagination(pageNumber, pageSize,
+				medicine = this.repositoryMedicine.predictiveMedicineSearchWithPagination("%" + searchWord + "%",
+						 new Pagination(pageNumber, pageSize,
 								Sort.by(Sort.Direction.DESC, condition)));
 			}
-			if (StringUtil.isNotNull(sales) && !sales.isEmpty()) {
-				List<SalesDto> listSalesDtos = new ArrayList<>();
-				sales.stream().forEach(obj -> {
-					SalesDto saleDto = MapperSales.salesToSalesDtoMapper(obj,serviceHome.getUserId());
-					listSalesDtos.add(saleDto);
+			if (StringUtil.isNotNull(medicine) && !medicine.isEmpty()) {
+				List<MedicineDto> listMedicineDtos = new ArrayList<>();
+				medicine.stream().forEach(obj -> {
+					MedicineDto medicineDto = MapperMedicine.medicineToMedicineDtoMapper(obj,serviceHome.getUserId());
+					listMedicineDtos.add(medicineDto);
 				});
 				Map<Object,Object> data = new HashMap<>();
 				data.put("search-keyword",searchKeyword );
 				data.put("total-count", totalCount);
 				data.put("page-number", pageNumber);
 				data.put("page-size",pageSize);
-				data.put("records",listSalesDtos);
+				data.put("records",listMedicineDtos);
 				data.put("sort-on",sortOn);
 				data.put("sort-by",sortBy);
 				data.put("from-date",fromDate);

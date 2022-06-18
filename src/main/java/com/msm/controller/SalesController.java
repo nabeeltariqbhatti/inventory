@@ -26,6 +26,7 @@ public class SalesController {
 	private static final Logger log = LoggerFactory.getLogger(SalesController.class);
 	private final ServiceSales serviceSales;
 
+	@Autowired private ObjectMapper objectMapper;
 	@Autowired
 	public SalesController(ServiceSales serviceSales) {
 		this.serviceSales = serviceSales;
@@ -36,9 +37,8 @@ public class SalesController {
 
 		long startTime = System.currentTimeMillis();
 		long endTime = 0;
-		log.info("Sales request create " + new ObjectMapper().writeValueAsString(salesDto));
+		log.info("Sales request create " + objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(salesDto));
 		if (StringUtil.isNotNull(salesDto)) {
-
 			return serviceSales.saveUpdate(salesDto);
 		} else {
 			endTime = System.currentTimeMillis();
