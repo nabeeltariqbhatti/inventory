@@ -1,5 +1,6 @@
 package com.msm.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.msm.common.library.constant.AppConstant;
 import com.msm.common.library.dto.CustomResponse;
@@ -28,7 +29,7 @@ import java.util.List;
  */
 
 @Service
-public class ServiceCustomerImpl implements ServiceCustomer {
+public class ServiceCustomerImpl implements ServiceCustomer  {
 
     private static final Logger log = LoggerFactory.getLogger(ServiceCustomerImpl.class);
 
@@ -43,7 +44,7 @@ public class ServiceCustomerImpl implements ServiceCustomer {
     }
 
     @Override
-    public CustomResponse saveUpdate(CustomerDto customerDto) {
+    public CustomResponse saveUpdate(CustomerDto customerDto) throws JsonProcessingException  {
         long startTime = System.currentTimeMillis();
         long endTime = 0;
         Customer customer = null;
@@ -55,11 +56,13 @@ public class ServiceCustomerImpl implements ServiceCustomer {
                 customer = CustomerMapper.customerDtoToCustomerMapper(customerDto, customer, serviceHome.getUserId());
 
                 repositoryCustomer.save(customer);
+                log.info("customer updated successfully");
                 endTime = System.currentTimeMillis();
                 return new CustomResponse.CustomResponseBuilder().code(HttpStatus.CREATED.value())
                         .status(HttpStatus.CREATED).message(AppConstant.DATA_UPDATE_SUCCESSFULL).data(null)
                         .requestTime(endTime - startTime).build();
             } else {
+                log.info("customer not found");
                 endTime = System.currentTimeMillis();
                 return new CustomResponse.CustomResponseBuilder().code(HttpStatus.NOT_FOUND.value())
                         .status(HttpStatus.NOT_FOUND).message(AppConstant.DATA_NOT_FOUND).data(customerDto)
@@ -77,12 +80,13 @@ public class ServiceCustomerImpl implements ServiceCustomer {
     }
 
     @Override
-    public CustomResponse getCustomerById(Integer customerId) {
+    public CustomResponse getCustomerById(Integer customerId) throws JsonProcessingException {
         long startTime = System.currentTimeMillis();
         long endTime = 0;
 
         Customer customer = repositoryCustomer.findByIdAndIsDeleted(customerId, false);
         if (StringUtil.isNotNull(customer)) {
+            log.info("customer data" , new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(customer));
             CustomerDto customerDto = CustomerMapper.customerToCustomerDtoMapper(customer);
             endTime = System.currentTimeMillis();
             return new CustomResponse.CustomResponseBuilder().code(HttpStatus.FOUND.value()).status(HttpStatus.FOUND)

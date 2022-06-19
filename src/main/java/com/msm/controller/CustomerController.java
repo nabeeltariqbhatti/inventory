@@ -31,7 +31,7 @@ public class CustomerController {
     public CustomResponse saveCustomer(@RequestBody CustomerDto customerDto) throws JsonProcessingException {
         long startTime = System.currentTimeMillis();
         long endTime = 0;
-        log.info("Customer request create " + new ObjectMapper().writeValueAsString(customerDto));
+        log.info("Customer request create " + new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(customerDto));
         if (StringUtil.isNotNull(customerDto)) {
             return serviceCustomer.saveUpdate(customerDto);
         } else {
