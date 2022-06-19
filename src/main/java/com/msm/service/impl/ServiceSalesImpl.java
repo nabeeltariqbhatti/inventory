@@ -202,16 +202,16 @@ public class ServiceSalesImpl implements ServiceSales {
 
 			if (sortBy.equals("") && sortOn.equals("")) {
 				sales = this.repositorySales.predictiveSalesSearchWithPagination("%" + searchWord + "%",
-						(Pageable) new Pagination(pageNumber, pageSize,
+						new Pagination(pageNumber, pageSize,
 								Sort.by(Sort.Direction.ASC, condition)));
 			}
 			if (sortBy.equals("ASC")) {
 				sales = this.repositorySales.predictiveSalesSearchWithPagination("%" + searchWord + "%",
-						(Pageable) new Pagination(pageNumber, pageSize,
+						 new Pagination(pageNumber, pageSize,
 								Sort.by(Sort.Direction.ASC, condition)));
 			} else if (sortBy.equals("DESC")) {
 				sales = this.repositorySales.predictiveSalesSearchWithPagination("%" + searchWord + "%",
-						(Pageable) new Pagination(pageNumber, pageSize,
+						 new Pagination(pageNumber, pageSize,
 								Sort.by(Sort.Direction.DESC, condition)));
 			}
 			if (StringUtil.isNotNull(sales) && !sales.isEmpty()) {

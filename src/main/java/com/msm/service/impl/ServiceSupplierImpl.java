@@ -78,6 +78,7 @@ public class ServiceSupplierImpl implements ServiceSupplier {
 			}
 		} else {
 
+			supplier = new Supplier();
 			supplier = MapperSupplier.getSupplierFromSupplierDto(supplier, supplierDto, serviceHome.getUserId());
 			supplier.setDistribution(
 					repositoryDistribution.findByIdAndIsDeleted(supplierDto.getDistribution().getId(), false));
