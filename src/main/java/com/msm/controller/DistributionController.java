@@ -24,7 +24,6 @@ import com.msm.dto.DistributionDto;
 import com.msm.dto.DtoSearch;
 import com.msm.service.ServiceDistribution;
 
-import net.sf.jasperreports.engine.JRException;
 
 /**
  * 
@@ -60,8 +59,7 @@ public class DistributionController {
 	}
 
 	@PutMapping
-	public CustomResponse updateDistribution(@RequestBody DistributionDto distributionDto)
-			throws IOException, JRException {
+	public CustomResponse updateDistribution(@RequestBody DistributionDto distributionDto) throws JsonProcessingException{
 		long startTime = System.currentTimeMillis();
 		long endTime = 0;
 		LOGGER.info("Calling Distribution Updating",

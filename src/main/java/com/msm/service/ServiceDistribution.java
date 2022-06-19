@@ -3,6 +3,7 @@ package com.msm.service;
 
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.msm.common.library.dto.CustomResponse;
 import com.msm.dto.DistributionDto;
 import com.msm.dto.DtoSearch;
@@ -15,14 +16,14 @@ import com.msm.dto.DtoSearch;
  */
 public interface ServiceDistribution {
 
-	CustomResponse saveDistribution(DistributionDto distributionDto);
+	CustomResponse saveDistribution(DistributionDto distributionDto)throws JsonProcessingException;
 
-	CustomResponse getDistributionById(Integer distributionId);
+	CustomResponse getDistributionById(Integer distributionId)throws JsonProcessingException;
 
-	CustomResponse deleteDistributionById(Integer distributionId);
+	CustomResponse deleteDistributionById(Integer distributionId)throws JsonProcessingException;
 
-	CustomResponse getForDwopDown();
+	CustomResponse getForDwopDown()throws JsonProcessingException;
 
-	CustomResponse searchDistributionWithPaging(DtoSearch dtoSearch);
+	CustomResponse searchDistributionWithPaging(DtoSearch dtoSearch)throws JsonProcessingException;
 
 }
