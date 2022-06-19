@@ -9,6 +9,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.msm.common.library.constant.AppConstant;
 import com.msm.common.library.dto.CustomResponse;
 import com.msm.common.library.util.StringUtil;
@@ -79,10 +81,11 @@ public class ServiceDistributionImpl implements ServiceDistribution {
 	}
 
 	@Override
-	public CustomResponse getDistributionById(Integer distributionId) {
+	public CustomResponse getDistributionById(Integer distributionId) throws JsonProcessingException {
 		long startTime = System.currentTimeMillis();
 		long endTime = 0L;
 		Distribution distribution = repositoryDistribution.findByIdAndIsDeleted(distributionId, false);
+		LOGGER.info("Distribution get Model :", new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(distribution));
 		if (StringUtil.isNotNull(distribution)) {
 			DistributionDto distributionDto = MapperDistribution.getDistributionDtoFromDistribution(distribution);
 			return new CustomResponse.CustomResponseBuilder().code(HttpStatus.FOUND.value()).status(HttpStatus.FOUND)
@@ -99,12 +102,15 @@ public class ServiceDistributionImpl implements ServiceDistribution {
 		long startTime = System.currentTimeMillis();
 		long endTime = 0L;
 		Distribution distribution = repositoryDistribution.findByIdAndIsDeleted(distributionId, false);
+		
 		if (StringUtil.isNotNull(distribution)) {
 			distribution.setIsDeleted(true);
 			repositoryDistribution.save(distribution);
+			LOGGER.info("Distribution get Model For Deleting:");
 			return new CustomResponse.CustomResponseBuilder().code(HttpStatus.OK.value()).status(HttpStatus.OK)
 					.message(AppConstant.DATA_DELETED_SUCCESSFULL).data(null).requestTime(endTime - startTime).build();
 		} else {
+			LOGGER.info("Distribution get Model Data Not Found:");
 			return new CustomResponse.CustomResponseBuilder().code(HttpStatus.NOT_FOUND.value())
 					.status(HttpStatus.NOT_FOUND).message(AppConstant.DATA_FOUND).data(null)
 					.requestTime(endTime - startTime).build();
@@ -117,6 +123,7 @@ public class ServiceDistributionImpl implements ServiceDistribution {
 		long endTime = 0L;
 		List<Distribution> distributions = repositoryDistribution.findByIsDeleted(false);
 		if (StringUtil.isNotNull(distributions) && !distributions.isEmpty()) {
+			LOGGER.info("Distribution get Model Data FOUND:");
 			List<DistributionDto> distributionDtos = new ArrayList<DistributionDto>();
 			distributions.stream().forEach(obj -> {
 				DistributionDto distributionDto = MapperDistribution.getDistributionDtoFromDistribution(obj);
@@ -125,6 +132,7 @@ public class ServiceDistributionImpl implements ServiceDistribution {
 			return new CustomResponse.CustomResponseBuilder().code(HttpStatus.FOUND.value()).status(HttpStatus.FOUND)
 					.message(AppConstant.DATA_FOUND).data(distributionDtos).requestTime(endTime - startTime).build();
 		} else {
+			LOGGER.info("Distribution get Model Data NOTFOUND:");
 			return new CustomResponse.CustomResponseBuilder().code(HttpStatus.NOT_FOUND.value())
 					.status(HttpStatus.NOT_FOUND).message(AppConstant.DATA_FOUND).data(null)
 					.requestTime(endTime - startTime).build();
@@ -171,6 +179,7 @@ public class ServiceDistributionImpl implements ServiceDistribution {
 			}
 
 			if (StringUtil.isNotNull(distributions) && !distributions.isEmpty()) {
+				LOGGER.info("Distribution get Model Data FOUND:");
 				List<DistributionDto> distributionDtos = new ArrayList<DistributionDto>();
 				distributions.stream().forEach(obj -> {
 					DistributionDto distributionDto = MapperDistribution.getDistributionDtoFromDistribution(obj);
@@ -181,6 +190,7 @@ public class ServiceDistributionImpl implements ServiceDistribution {
 						.status(HttpStatus.FOUND).message(AppConstant.DATA_FOUND).data(dtoSearch)
 						.requestTime(endTime - startTime).build();
 			} else {
+				LOGGER.info("Distribution get Model Data Not FOUND:");
 				return new CustomResponse.CustomResponseBuilder().code(HttpStatus.NOT_FOUND.value())
 						.status(HttpStatus.NOT_FOUND).message(AppConstant.DATA_FOUND).data(null)
 						.requestTime(endTime - startTime).build();
