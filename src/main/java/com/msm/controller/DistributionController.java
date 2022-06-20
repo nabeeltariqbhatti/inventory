@@ -43,7 +43,7 @@ public class DistributionController {
 	}
 
 	@PostMapping
-	public CustomResponse saveDistribution(DistributionDto distributionDto) throws JsonProcessingException {
+	public CustomResponse saveDistribution(@RequestBody DistributionDto distributionDto) throws JsonProcessingException {
 		long startTime = System.currentTimeMillis();
 		long endTime = 0;
 		LOGGER.info("Calling Distribution saving",
