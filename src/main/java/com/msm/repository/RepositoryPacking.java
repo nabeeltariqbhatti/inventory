@@ -16,13 +16,11 @@ public interface RepositoryPacking extends JpaRepository<Packing, Integer> {
 
     List<Packing> findByIsDeleted(boolean isDeleted);
 
-    @Query("SELECT COUNT(*) FROM Packing p WHERE p.name LIKE :searchKeyWord "
-            + "p.MedicineDetail.name LIKE :searchKeyWord AND s.isDeleted=false")
+    @Query("SELECT COUNT(*) FROM Packing p WHERE p.name LIKE :searchKeyWord AND p.isDeleted=false")
     Integer predictivePackingSearchTotalCount(@Param("searchKeyWord") String searchKeyWord);
 
-    @Query("SELECT COUNT(*) FROM Packing p WHERE p.name LIKE :searchKeyWord "
-            + "p.MedicineDetail.name LIKE :searchKeyWord AND s.isDeleted=false")
-    List<Packing> predictivePackingSearchWithPagination(@Param("searchKeyWord")String searchKeyWord, Pageable pageRequest);
+    @Query("SELECT COUNT(*) FROM Packing p WHERE p.name LIKE :searchKeyWord  AND p.isDeleted=false")
+    List<Packing> predictivePackingSearchWithPagination(@Param("searchKeyWord")String searchKeyWord, Pageable pageable);
 
 
 }
