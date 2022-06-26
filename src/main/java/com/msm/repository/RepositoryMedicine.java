@@ -1,9 +1,6 @@
 package com.msm.repository;
 
 
-
-
-import com.msm.entity.Medicine;
 import com.msm.entity.Medicine;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,9 +20,9 @@ public interface RepositoryMedicine extends JpaRepository<Medicine,Integer> {
 
     List<Medicine> findByIsDeleted(boolean b);
 
-    @Query("SELECT m FROM Medicine m WHERE m.name LIKE :searchKeyWord OR m.company.name LIKE :searchKeyWord AND m.isDeleted=false")
+    @Query("SELECT m FROM Medicine m WHERE (m.name LIKE :searchKeyWord OR m.company.name LIKE :searchKeyWord OR m.composition.name LIKE :searchKeyWord) AND m.isDeleted=false")
     List<Medicine> predictiveMedicineSearchWithPagination(@Param("searchKeyWord") String searchKeyWord, Pageable pageRequest);
 
-    @Query("SELECT COUNT(*) FROM Medicine m WHERE m.name LIKE :searchKeyWord OR m.company.name LIKE :searchKeyWord AND m.isDeleted=false")
+    @Query("SELECT COUNT(m) FROM Medicine m WHERE (m.name LIKE :searchKeyWord OR m.company.name LIKE :searchKeyWord OR m.composition.name LIKE :searchKeyWord) AND m.isDeleted=false")
     Integer predictiveMedicineSearchTotalCount(@Param("searchKeyWord")String searchKeyWord);
 }

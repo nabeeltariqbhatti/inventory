@@ -101,15 +101,15 @@ public class SalesController {
 		return serviceSales.getForDwopDown();
 	}
 
-	@GetMapping("/searchCompositionWithPaging")
-	public CustomResponse searchCompositionWithPaging(@RequestParam(required = false) String searchKeyword,
+	@GetMapping("/searchSalesWithPaging")
+	public CustomResponse searchSalesWithPaging(@RequestParam(required = false) String searchKeyword,
 													  @RequestParam(required = false, defaultValue = "0") Integer pageNumber,
 													  @RequestParam(required = false, defaultValue = "10") Integer pageSize,
 													  @RequestParam(required = false) Integer totalCount, @RequestParam(required = false) String sortOn,
 													  @RequestParam(required = false) String sortBy, @RequestParam(required = false) String fromDate,
 													  @RequestParam(required = false) String toDate) throws JsonProcessingException {
 
-		log.info("search Composition With Paging .. {}  {} {} {} {} {} {} {}", searchKeyword, pageNumber, pageSize,
+		log.info("search Sales With Paging .. {}  {} {} {} {} {} {} {}", searchKeyword, pageNumber, pageSize,
 				sortBy, sortOn, totalCount, fromDate, toDate);
 		return serviceSales.searchSalesWithPaging(searchKeyword, pageNumber, pageSize, sortBy, sortOn,
 				totalCount, fromDate, toDate);
